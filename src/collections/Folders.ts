@@ -4,6 +4,7 @@ export const Folders: CollectionConfig = {
   slug: 'folders',
   admin: {
     useAsTitle: 'name',
+    group: 'Base',
   },
   folders: true,
   fields: [

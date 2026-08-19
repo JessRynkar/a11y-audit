@@ -62,61 +62,63 @@ export type SupportedTimezones =
   | 'Pacific/Fiji';
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "LexicalNodes_BD0689B0".
+ * via the `definition` "LexicalNodes_161CBF25".
  */
-export type LexicalNodes_BD0689B0 =
+export type LexicalNodes_161CBF25 =
   | SerializedTextNode
   | SerializedTabNode
   | SerializedLineBreakNode
-  | SerializedParagraphNode<LexicalNodes_BD0689B0>
+  | SerializedParagraphNode<LexicalNodes_161CBF25>
   | SerializedHorizontalRuleNode
   | SerializedUploadNode<'media'>
-  | SerializedQuoteNode<LexicalNodes_BD0689B0>
+  | SerializedQuoteNode<LexicalNodes_161CBF25>
   | SerializedRelationshipNode<
       | 'users'
       | 'pages'
       | 'folders'
       | 'versioned-articles'
       | 'field-showcase'
+      | 'gardening-season'
       | 'payload-kv'
       | 'payload-locked-documents'
       | 'payload-preferences'
       | 'payload-migrations'
     >
-  | SerializedAutoLinkNode<LexicalNodes_BD0689B0, LexicalLinkFields>
-  | SerializedLinkNode<LexicalNodes_BD0689B0, LexicalLinkFields>
-  | SerializedListNode<LexicalNodes_BD0689B0>
-  | SerializedListItemNode<LexicalNodes_BD0689B0>
-  | SerializedHeadingNode<LexicalNodes_BD0689B0>;
+  | SerializedAutoLinkNode<LexicalNodes_161CBF25, LexicalLinkFields>
+  | SerializedLinkNode<LexicalNodes_161CBF25, LexicalLinkFields>
+  | SerializedListNode<LexicalNodes_161CBF25>
+  | SerializedListItemNode<LexicalNodes_161CBF25>
+  | SerializedHeadingNode<LexicalNodes_161CBF25>;
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "LexicalNodes_04CBBD9E".
+ * via the `definition` "LexicalNodes_66ABEE46".
  */
-export type LexicalNodes_04CBBD9E =
+export type LexicalNodes_66ABEE46 =
   | SerializedTextNode
   | SerializedTabNode
   | SerializedLineBreakNode
-  | SerializedParagraphNode<LexicalNodes_04CBBD9E>
+  | SerializedParagraphNode<LexicalNodes_66ABEE46>
   | SerializedBlockNode<InlineCallout>
   | SerializedUploadNode<'media', LexicalUploadFields_7C90EEAC>
-  | SerializedAutoLinkNode<LexicalNodes_04CBBD9E, LexicalLinkFields>
-  | SerializedLinkNode<LexicalNodes_04CBBD9E, LexicalLinkFields>
-  | SerializedHeadingNode<LexicalNodes_04CBBD9E, 'h1' | 'h2' | 'h3' | 'h4'>
+  | SerializedAutoLinkNode<LexicalNodes_66ABEE46, LexicalLinkFields>
+  | SerializedLinkNode<LexicalNodes_66ABEE46, LexicalLinkFields>
+  | SerializedHeadingNode<LexicalNodes_66ABEE46, 'h1' | 'h2' | 'h3' | 'h4'>
   | SerializedHorizontalRuleNode
-  | SerializedQuoteNode<LexicalNodes_04CBBD9E>
+  | SerializedQuoteNode<LexicalNodes_66ABEE46>
   | SerializedRelationshipNode<
       | 'users'
       | 'pages'
       | 'folders'
       | 'versioned-articles'
       | 'field-showcase'
+      | 'gardening-season'
       | 'payload-kv'
       | 'payload-locked-documents'
       | 'payload-preferences'
       | 'payload-migrations'
     >
-  | SerializedListNode<LexicalNodes_04CBBD9E>
-  | SerializedListItemNode<LexicalNodes_04CBBD9E>;
+  | SerializedListNode<LexicalNodes_66ABEE46>
+  | SerializedListItemNode<LexicalNodes_66ABEE46>;
 
 export interface Config {
   auth: {
@@ -130,6 +132,7 @@ export interface Config {
     folders: Folder;
     'versioned-articles': VersionedArticle;
     'field-showcase': FieldShowcase;
+    'gardening-season': GardeningSeason;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -143,6 +146,7 @@ export interface Config {
     folders: FoldersSelect<false> | FoldersSelect<true>;
     'versioned-articles': VersionedArticlesSelect<false> | VersionedArticlesSelect<true>;
     'field-showcase': FieldShowcaseSelect<false> | FieldShowcaseSelect<true>;
+    'gardening-season': GardeningSeasonSelect<false> | GardeningSeasonSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -152,12 +156,8 @@ export interface Config {
     defaultIDType: string;
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'es' | 'fr') | ('en' | 'es' | 'fr')[];
-  globals: {
-    settings: Setting;
-  };
-  globalsSelect: {
-    settings: SettingsSelect<false> | SettingsSelect<true>;
-  };
+  globals: {};
+  globalsSelect: {};
   locale: 'en' | 'es' | 'fr';
   widgets: {
     collections: CollectionsWidget;
@@ -242,7 +242,7 @@ export interface Media {
 export interface Page {
   id: string;
   title: string;
-  content?: LexicalRichText<LexicalNodes_BD0689B0> | null;
+  content?: LexicalRichText<LexicalNodes_161CBF25> | null;
   featuredImage?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
@@ -270,7 +270,7 @@ export interface Folder {
 export interface VersionedArticle {
   id: string;
   title: string;
-  content?: LexicalRichText<LexicalNodes_BD0689B0> | null;
+  content?: LexicalRichText<LexicalNodes_161CBF25> | null;
   status?: ('draft' | 'published') | null;
   updatedAt: string;
   createdAt: string;
@@ -290,7 +290,7 @@ export interface FieldShowcase {
     | {
         text?: string | null;
         date?: string | null;
-        richText?: LexicalRichText<LexicalNodes_BD0689B0> | null;
+        richText?: LexicalRichText<LexicalNodes_161CBF25> | null;
         relatedPage?: (string | null) | Page;
         id?: string | null;
       }[]
@@ -307,7 +307,7 @@ export interface FieldShowcase {
    */
   pointField?: [number, number] | null;
   radioField?: ('a' | 'b' | 'c') | null;
-  richText?: LexicalRichText<LexicalNodes_04CBBD9E> | null;
+  richText?: LexicalRichText<LexicalNodes_66ABEE46> | null;
   relatedPage?: (string | null) | Page;
   relatedPages?: (string | Page)[] | null;
   uploadField?: (string | null) | Media;
@@ -326,7 +326,7 @@ export interface FieldShowcase {
  */
 export interface TextBlock {
   heading?: string | null;
-  body?: LexicalRichText<LexicalNodes_BD0689B0> | null;
+  body?: LexicalRichText<LexicalNodes_161CBF25> | null;
   date?: string | null;
   relatedPage?: (string | null) | Page;
   id?: string | null;
@@ -345,6 +345,42 @@ export interface ImageBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'imageBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gardening-season".
+ */
+export interface GardeningSeason {
+  id: string;
+  name?: string | null;
+  colorsGrown?:
+    | {
+        color?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  content?: TextBlock_EB0685E5[] | null;
+  observationDate?: string | null;
+  numberObserved?: number | null;
+  iWitnessedThisMyself?: boolean | null;
+  season?: ('inSeason' | 'outOfSeason') | null;
+  visibility?: ('public' | 'private') | null;
+  pageToDisplayOn?: (string | null) | Page;
+  image?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Multiple blocks resolve to the `TextBlock` interface with different fields, so a content hash is appended to keep the generated types stable and unambiguous. Set a unique `interfaceName` on the block to choose the name yourself. See https://payloadcms.com/docs/typescript/generating-types#block-interface-name-collisions
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TextBlock_EB0685E5".
+ */
+export interface TextBlock_EB0685E5 {
+  richText?: LexicalRichText<LexicalNodes_161CBF25> | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'textBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -393,6 +429,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'field-showcase';
         value: string | FieldShowcase;
+      } | null)
+    | ({
+        relationTo: 'gardening-season';
+        value: string | GardeningSeason;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -577,6 +617,39 @@ export interface FieldShowcaseSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gardening-season_select".
+ */
+export interface GardeningSeasonSelect<T extends boolean = true> {
+  name?: T;
+  colorsGrown?:
+    | T
+    | {
+        color?: T;
+        id?: T;
+      };
+  content?:
+    | T
+    | {
+        textBlock?:
+          | T
+          | {
+              richText?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  observationDate?: T;
+  numberObserved?: T;
+  iWitnessedThisMyself?: T;
+  season?: T;
+  visibility?: T;
+  pageToDisplayOn?: T;
+  image?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -617,28 +690,6 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "settings".
- */
-export interface Setting {
-  id: string;
-  siteName?: string | null;
-  siteDescription?: string | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "settings_select".
- */
-export interface SettingsSelect<T extends boolean = true> {
-  siteName?: T;
-  siteDescription?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_widget".
  */
 export interface CollectionsWidget {
@@ -654,7 +705,8 @@ export interface CollectionsWidget {
 export interface CollectionQueryWidget {
   data?: {
     title?: string | null;
-    relatedCollection: 'users' | 'media' | 'pages' | 'folders' | 'versioned-articles' | 'field-showcase';
+    relatedCollection:
+      'users' | 'media' | 'pages' | 'folders' | 'versioned-articles' | 'field-showcase' | 'gardening-season';
     where?:
       | {
           [k: string]: unknown;
@@ -676,7 +728,8 @@ export interface CollectionQueryWidget {
  */
 export interface ActivityWidget {
   data?: {
-    excludedCollections?: ('users' | 'media' | 'pages' | 'folders' | 'versioned-articles' | 'field-showcase')[] | null;
+    excludedCollections?:
+      ('users' | 'media' | 'pages' | 'folders' | 'versioned-articles' | 'field-showcase' | 'gardening-season')[] | null;
   };
   width: 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'full';
 }

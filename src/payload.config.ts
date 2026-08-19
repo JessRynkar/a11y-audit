@@ -1,5 +1,6 @@
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -8,10 +9,10 @@ import sharp from 'sharp'
 import { VersionedArticles } from './collections/Articles'
 import { FieldShowcase } from './collections/FieldShowcase'
 import { Folders } from './collections/Folders'
+import { GardeningSeason } from './collections/GardeningSeason'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Users } from './collections/Users'
-import { Settings } from './globals/Settings'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -36,8 +37,8 @@ export default buildConfig({
     defaultLocale: 'en',
     fallback: true,
   },
-  collections: [Users, Media, Pages, Folders, VersionedArticles, FieldShowcase],
-  globals: [Settings],
+  collections: [Users, Media, Pages, Folders, VersionedArticles, FieldShowcase, GardeningSeason],
+  globals: [],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -48,6 +49,14 @@ export default buildConfig({
   }),
   sharp,
   plugins: [],
+  storage: [
+    vercelBlobStorage({
+      collections: {
+        media: true,
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN || '',
+    }),
+  ],
   onInit: async (payload) => {
     const existingUsers = await payload.find({ collection: 'users', limit: 1 })
     if (existingUsers.totalDocs === 0) {

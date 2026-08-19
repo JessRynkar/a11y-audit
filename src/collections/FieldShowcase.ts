@@ -17,6 +17,7 @@ export const FieldShowcase: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+    group: 'Base',
     description: 'Test collection covering every non-text field type in Payload.',
   },
   fields: [

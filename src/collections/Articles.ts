@@ -9,8 +9,10 @@ export const VersionedArticles: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+    group: 'Base',
     defaultColumns: ['title', 'status', 'updatedAt'],
-    description: 'Drafts & publishing enabled — use this collection to test version history, save draft, publish, unpublish, restore, and compare.',
+    description:
+      'Drafts & publishing enabled — use this collection to test version history, save draft, publish, unpublish, restore, and compare.',
     livePreview: {
       url: ({ data, locale }) =>
         `${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'}/preview/articles/${data?.id}?locale=${locale?.code ?? 'en'}`,

@@ -5,6 +5,7 @@ export const Pages: CollectionConfig = {
   trash: true,
   admin: {
     useAsTitle: 'title',
+    group: 'Base',
   },
   fields: [
     {
