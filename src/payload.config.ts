@@ -13,6 +13,7 @@ import { GardeningSeason } from './collections/GardeningSeason'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Users } from './collections/Users'
+import { TestGlobal } from './globals/TestGlobal'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -38,7 +39,7 @@ export default buildConfig({
     fallback: true,
   },
   collections: [Users, Media, Pages, Folders, VersionedArticles, FieldShowcase, GardeningSeason],
-  globals: [],
+  globals: [TestGlobal],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
