@@ -2,9 +2,9 @@ import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import path from 'path'
-import { buildConfig } from 'payload'
+import { buildConfig, type CollectionConfig, type GlobalConfig } from 'payload'
 import { fileURLToPath } from 'url'
-import sharp from 'sharp'
+import { sharpTransformer } from '@payloadcms/transformer-sharp'
 
 import { VersionedArticles } from './collections/Articles'
 import { FieldShowcase } from './collections/FieldShowcase'
@@ -17,6 +17,26 @@ import { TestGlobal } from './globals/TestGlobal'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+// Enable the required-fields help in this audit demo's document controls.
+function withRequiredFieldsHelp<T extends CollectionConfig | GlobalConfig>(entity: T): T {
+  return {
+    ...entity,
+    admin: {
+      ...entity.admin,
+      components: {
+        ...entity.admin?.components,
+        edit: {
+          ...entity.admin?.components?.edit,
+          beforeDocumentControls: [
+            ...(entity.admin?.components?.edit?.beforeDocumentControls ?? []),
+            '/components/RequiredFieldsHelp#RequiredFieldsHelp',
+          ],
+        },
+      },
+    },
+  }
+}
 
 export default buildConfig({
   admin: {
@@ -38,8 +58,16 @@ export default buildConfig({
     defaultLocale: 'en',
     fallback: true,
   },
-  collections: [Users, Media, Pages, Folders, VersionedArticles, FieldShowcase, GardeningSeason],
-  globals: [TestGlobal],
+  collections: [
+    Users,
+    Media,
+    Pages,
+    Folders,
+    VersionedArticles,
+    FieldShowcase,
+    GardeningSeason,
+  ].map(withRequiredFieldsHelp),
+  globals: [TestGlobal].map(withRequiredFieldsHelp),
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -48,7 +76,9 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URL || '',
   }),
-  sharp,
+  upload: {
+    transformers: [sharpTransformer()],
+  },
   plugins: [],
   storage: [
     vercelBlobStorage({
@@ -59,9 +89,14 @@ export default buildConfig({
     }),
   ],
   onInit: async (payload) => {
-    const existingUsers = await payload.find({ collection: 'users', limit: 1 })
+    const existingUsers = await payload.find({
+      overrideAccess: true,
+      collection: 'users',
+      limit: 1,
+    })
     if (existingUsers.totalDocs === 0) {
       await payload.create({
+        overrideAccess: true,
         collection: 'users',
         data: {
           email: 'dev@payloadcms.com',
@@ -70,7 +105,11 @@ export default buildConfig({
       })
     }
 
-    const existingPages = await payload.find({ collection: 'pages', limit: 1 })
+    const existingPages = await payload.find({
+      overrideAccess: true,
+      collection: 'pages',
+      limit: 1,
+    })
     if (existingPages.totalDocs === 0) {
       const loremParagraph = (text: string) =>
         ({
@@ -104,6 +143,7 @@ export default buildConfig({
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         }) as any
       await payload.create({
+        overrideAccess: true,
         collection: 'pages',
         data: {
           title: 'Home',
@@ -113,6 +153,7 @@ export default buildConfig({
         },
       })
       await payload.create({
+        overrideAccess: true,
         collection: 'pages',
         data: {
           title: 'About',
@@ -122,6 +163,7 @@ export default buildConfig({
         },
       })
       await payload.create({
+        overrideAccess: true,
         collection: 'pages',
         data: {
           title: 'Contact',
@@ -132,27 +174,36 @@ export default buildConfig({
       })
     }
 
-    const existingFolders = await payload.find({ collection: 'folders', limit: 1 })
+    const existingFolders = await payload.find({
+      overrideAccess: true,
+      collection: 'folders',
+      limit: 1,
+    })
     if (existingFolders.totalDocs === 0) {
       const marketing = await payload.create({
+        overrideAccess: true,
         collection: 'folders',
         data: { name: 'Marketing' },
       })
       const engineering = await payload.create({
+        overrideAccess: true,
         collection: 'folders',
         data: { name: 'Engineering' },
       })
       // Sub-folders nested under Marketing
       await payload.create({
+        overrideAccess: true,
         collection: 'folders',
         data: { name: 'Campaigns', _h_folders: marketing.id },
       })
       await payload.create({
+        overrideAccess: true,
         collection: 'folders',
         data: { name: 'Brand Assets', _h_folders: marketing.id },
       })
       // Sub-folder nested under Engineering
       await payload.create({
+        overrideAccess: true,
         collection: 'folders',
         data: { name: 'Docs', _h_folders: engineering.id },
       })
